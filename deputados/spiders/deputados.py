@@ -33,8 +33,8 @@ class QuotesSpider(scrapy.Spider):
     def parse(self, response, genero):
         dep_info = self.dep_info(response, genero)
         presencas = self.dep_presenca(response)
-        gastos_par = self.gastos_parlamentar(response)
-        gastos_gab = self.gastos_parlamentar(response)
+        gastos_par = self.gastos_par(response)
+        gastos_gab = self.gastos_gab(response)
 
         yield {
             **dep_info,
@@ -82,7 +82,7 @@ class QuotesSpider(scrapy.Spider):
             "ausencia_justificada_comissao": None
         }
 
-    def gastos_parlamentar(self, response):
+    def gastos_par(self, response):
         data = BeautifulSoup(response.body, "html")
         gastos_parlamentar = data.find_all("table", {"id": "gastomensalcotaparlamentar"})[0].find_all("td")
   
@@ -105,7 +105,7 @@ class QuotesSpider(scrapy.Spider):
             "gasto_total_gab": soma_gastos,
         }
 
-    def gastos_gabinete(self, response):
+    def gastos_gab(self, response):
         data = BeautifulSoup(response.body, "html")
         gastos_gabinete = data.find_all("table", {"id": "gastomensalverbagabinete"})[0].find_all("td")
   
